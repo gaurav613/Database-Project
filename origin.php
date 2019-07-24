@@ -1,6 +1,12 @@
+<html>
+<link rel="stylesheet" type="text/css" href="style.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 <body>
-<h1>Find Origin of Company</h1>
-
+<div class="header">
+  <h1>All About Cars</h1>
+  <p>MSCI 346 Term Project</p>
+</div>
+<body>
 <?php
 // Enable error logging: 
 error_reporting(E_ALL ^ E_NOTICE);
@@ -10,7 +16,7 @@ include('./my_connect.php');
 $mysqli = get_mysqli_conn();
 
 // SQL statement
-$sql = "SELECT c.origin, c.company_name FROM company c WHERE c.company_id=?";
+$sql = "SELECT m.year FROM cars s NATURAL JOIN makes m NATURAL JOIN company c WHERE c.company_cid = ?, s.cid = ?";
 
 // Prepared statement, stage 1: prepare
 $stmt = $mysqli->prepare($sql);
@@ -36,4 +42,8 @@ if ($stmt->fetch())
 $stmt->close(); 
 $mysqli->close();
 ?>
+<br>
+<a class="stdbtn" href="index.php">Back to the main page</a>
+</br>
 </body>
+</html>

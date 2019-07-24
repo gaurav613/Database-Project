@@ -1,8 +1,14 @@
+<html>
+<link rel="stylesheet" type="text/css" href="style.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
 <body>
-<h1>Find Origin of Company</h1>
+<div class="header">
+  <h1>All About Cars</h1>
+  <p>MSCI 346 Term Project</p>
+</div>
 
-<form action="origin.php" method="get">
-
+<form action ="page2.php" method="get">
 <?php
 // Enable error logging: 
 error_reporting(E_ALL ^ E_NOTICE);
@@ -12,35 +18,39 @@ $mysqli = get_mysqli_conn();
 ?>
 
 <?php
-// SQL statement
-$sql = "SELECT c.company_id,c.company_name "
-	. "FROM company c";
-	
-// Prepared statement, stage 1: prepare
+//statement for company name filter
+$sql = "SELECT c.company_id, c.company_name FROM company c";
+//prepare statement
 $stmt = $mysqli->prepare($sql);
-
-// Prepared statement, stage 2: execute
+//execute statement
 $stmt->execute();
+//bind result of executed statement
+$stmt->bind_result($company_id,$company_name);
 
-// Bind result variables 
-$stmt->bind_result($company_id, $company_name); 
-
-/* fetch values */ 
-echo '<label for="company_id">Pick Company: </label>'; 
-echo '<select name="company_id">'; 
-while ($stmt->fetch()) 
+echo '<label for="company_id">Pick Company:</label>';
+echo '<select name="company_ids[]" multiple size = 10 class="pure-menu pure-menu-scrollable">';
+while($stmt->fetch())
 {
-printf ('<option value="%s">%s</option>', $company_id, $company_name); 
+  printf('<option value="%s">%s</option>',$company_id,$company_name);
 }
-echo '</select><br>'; 
+echo '</select>';
 
-/* close statement and connection*/ 
-$stmt->close(); 
+$stmt->close();
 $mysqli->close();
 ?>
+</form>
+
+<form class = "pure-form pure-form-stacked">
+  <fieldset>
+    <input type="text" name="minprice" placeholder ="Minimum Price" />
+    <input type="text" name="subjet" placeholder ="Maximum Price" />
+  </fieldset>
+</form>
 
 <br>
-<input type="submit" value="Continue"/>
+<input class="pure-button" type="submit" value="Continue"/>
 </br>
-</form>
+
 </body>
+</html>
+

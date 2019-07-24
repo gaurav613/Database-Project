@@ -1,0 +1,17 @@
+.header {
+    padding: 30px;
+    text-align: center;
+    background: white;
+    color: black;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.custom-select {
+    position: relative;
+    font-family: Arial;
+}
+
+a:visited {
+    color: blue;
+}
