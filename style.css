@@ -15,6 +15,10 @@
     font-family: 'Roboto', sans-serif;
 }
 
+.header3 {
+    align-content: center;
+}
+
 .custom-select {
     position: relative;
     font-family: Arial;
@@ -32,5 +36,18 @@ a:visited {
 }
 
 .prices {
-    right: 50px;
+    color: red;
+}
+
+#table {
+    transform: rotate(90deg);
+}
+
+#table th,
+#table td {
+    transform: rotate(-90deg);
+}
+
+td {
+    height: 50px;
 }
