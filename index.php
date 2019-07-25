@@ -8,7 +8,8 @@
   <p>MSCI 346 Term Project</p>
 </div>
 
-<form action ="page2.php" method="get">
+
+<form action ="page2.php" method="get" >
 <?php
 // Enable error logging: 
 error_reporting(E_ALL ^ E_NOTICE);
@@ -16,7 +17,6 @@ error_reporting(E_ALL ^ E_NOTICE);
 include ('./my_connect.php');
 $mysqli = get_mysqli_conn();
 ?>
-
 <?php
 //statement for company name filter
 $sql = "SELECT c.company_id, c.company_name FROM company c";
@@ -27,29 +27,47 @@ $stmt->execute();
 //bind result of executed statement
 $stmt->bind_result($company_id,$company_name);
 
-echo '<label for="company_id">Pick Company:</label>';
+echo '<label "for=company_id">Pick Company:</label><br>';
 echo '<select name="company_ids[]" multiple size = 10 class="pure-menu pure-menu-scrollable">';
 while($stmt->fetch())
 {
   printf('<option value="%s">%s</option>',$company_id,$company_name);
 }
-echo '</select>';
+echo '</select><br>';
+
+echo '<div class="header">';
+echo '<label "for=min_price">Enter minimum price</label><br>';
+echo '<input name = "minprice" type="text" /><br><br>';
+echo '<label "for=max_price" >Enter maximum price</label><br>';
+echo '<input name = "maxprice" type="text"/><br>';
+echo '</div>';
+
+$sql1 = "SELECT t.type FROM types t";
+//prepare statement
+$stmt1 = $mysqli->prepare($sql1);
+//execute statement
+$stmt1->execute();
+//bind result of executed statement
+$stmt1->bind_result($type);
+
+echo '<label "for=type">Pick Type:</label><br>';
+echo '<select name="car_types[]" multiple>';
+while($stmt1->fetch())
+{
+  printf('<option value="%s">%s</option>',$type,$type);
+}
+echo '</select><br>';
 
 $stmt->close();
+$stmt1->close();
 $mysqli->close();
+
+
 ?>
+  <br>
+    <input  class = "pure-button pure-button-primary" type="submit" value="Continue"/>
+  </br>
 </form>
-
-<form class = "pure-form pure-form-stacked">
-  <fieldset>
-    <input type="text" name="minprice" placeholder ="Minimum Price" />
-    <input type="text" name="subjet" placeholder ="Maximum Price" />
-  </fieldset>
-</form>
-
-<br>
-<input class="pure-button" type="submit" value="Continue"/>
-</br>
 
 </body>
 </html>

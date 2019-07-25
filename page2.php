@@ -18,25 +18,49 @@
     ?>
     <?php
         
-        $sqlOld = "SELECT s.cmodel, c.company_name, m.year, s.price FROM company c NATURAL JOIN makes m NATURAL JOIN cars s WHERE ";
+        $sqlOld = "SELECT s.cmodel, s.price, t.type, c.company_name, m.year FROM types t NATURAL JOIN oftype NATURAL JOIN cars s NATURAL JOIN makes m NATURAL JOIN company c  WHERE ";
         $add = "";
-
+    //Company Filter
         foreach($_GET['company_ids'] as $id)
         {
             $add .= "c.company_id = " . $id . " OR ";
         }
         $add = substr($add, 0, -3);
+
+    //Price Filter
+        $min_price = (empty($_GET['minprice']) ? '0' : $_GET['minprice']);
+        $max_price = (empty($_GET['maxprice']) ? '4300000' : $_GET['maxprice']);
+        $add .="AND (s.price BETWEEN $min_price AND $max_price)";
+    
+    //Type Filter
+        $add .= " AND ";
+        foreach($_GET['car_types'] as $type)
+        {
+            $add .= "t.type = '" . $type . "' OR ";
+        }
+        $add = substr($add, 0, -3);
+    
+        
+        //Type Filter
+        $add .= " AND ";
+        foreach($_GET['car_types'] as $type)
+        {
+            $add .= "t.type = '" . $type . "' OR ";
+        }
+        $add = substr($add, 0, -3);
+    
         $sql = $sqlOld . $add ;
         $stmt = $mysqli->prepare($sql);
         $stmt->execute();
-        $stmt->bind_result($cars_cmodel, $company_name,$year,$price);
+        $stmt->bind_result($cars_cmodel, $price, $type, $company_name,$year);
 
     ?>
-    <table class="pure-table">
+    <table class="pure-table" align="center">
     <tr>
         <th>Car</th>
-        <th>Company</th> 
         <th>Price</th>
+        <th>Type</th> 
+        <th>Company</th> 
         <th>Year</th> 
     </tr>
         <?php
@@ -44,13 +68,17 @@
         {
             echo '<tr>';
             echo '<td>'.$cars_cmodel.'</td>';
-            echo '<td>'.$company_name.'</td>';
             echo '<td>'.$price.'</td>';
+            echo '<td>'.$type.'</td>';
+            echo '<td>'.$company_name.'</td>';
             echo '<td>'.$year.'</td>';
             echo '</tr>';
         }
         $stmt->close();
         ?>
     </table>
+    <br>
+    <a class="stdbtn" href="index.php">Back to the main page</a>
+    </br>
 </body>
 </html>
