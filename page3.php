@@ -114,15 +114,16 @@ $stmt1->bind_result($fe,$sr,$acc,$hp);
  echo '<div class="header2">';
  echo  '<h4>REVIEWS</h4>';
  echo '</div>';
-$review = "SELECT r.rating, r.review, r.date FROM reviews r WHERE cid = ?";
-$getID = "SELECT cid from cars WHERE cmodel = ?";
-$stmtr = $mysqli->prepare($review);
+$review = "SELECT r.rating, r.review, r.date FROM reviews r NATURAL JOIN cars c WHERE c.cmodel = ?";
+/*$getID = "SELECT cid from cars WHERE cmodel = ?";
+
 $stmtid = $mysqli->prepare($getID);
 $stmtid->bind_param('s',$cmodel);
 $stmtid->execute();
 $stmtid->bind_result($id);
-
-$stmtr->bind_param('i',$id);
+*/
+$stmtr = $mysqli->prepare($review);
+$stmtr->bind_param('s',$cmodel);
 $stmtr->execute();
 $stmtr->bind_result($rating,$review,$date);
 
@@ -132,6 +133,9 @@ $stmtr->bind_result($rating,$review,$date);
         <th>Rating</th>
         <th>Review</th>
         <th>Date</th>
+        <th>Update</th>
+        <th>Delete</th>
+        
     </tr>
         <?php
         while($stmtr->fetch())
@@ -140,15 +144,18 @@ $stmtr->bind_result($rating,$review,$date);
             echo '<td>'.$rating.'</td>';
             echo '<td>'.$review.'</td>';
             echo '<td>'.$date.'</td>';
+            echo '<td><a class="stdbtn" href ="update_review.php?car_model='.$cmodel.'&rating='.$rating.'&review='.$review.'&date='.$date.'">Update Review</a></td>';
+            echo '<td><a class="stdbtn" href ="delete_review.php?car_model='.$cmodel.'&rating='.$rating.'&review='.$review.'&date='.$date.'">Delete Review</a></td>';
             echo '</tr>';
         }
         $stmtr->close();
-        $stmtid->close();
         ?>
 </table>
 <br>
-    <a class="stdbtn" href="page4.php">Add a review</a>
-  </br>
+   <?php 
+   echo '<a class="stdbtn" href="page4.php?car_model='.$cmodel.'">Add a review</a>';
+   ?>
+ </br>
 <?php
 
 ?>

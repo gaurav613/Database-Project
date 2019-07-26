@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <link rel="stylesheet" type="text/css" href="style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
@@ -9,27 +8,30 @@
   <p>MSCI 346 Term Project</p>
   <br>
     <a class="stdbtn" href="index.php">Main Page</a>
-  </br>
-<br><br><br>
-
+  </br> 
+</div>
 <?php
-$model =$_GET['car_model'];
-echo '<h2>Add Review for '.$model.'</h2>';
+    // Enable error logging: 
+    error_reporting(E_ALL ^ E_NOTICE);
+    // mysqli connection via user-defined function
+    include ('./my_connect.php');
+    $mysqli = get_mysqli_conn();
 ?>
-
-<form action="add_review.php" method ="get">
+<?php
+$rating = $_GET['rating'];
+$review = $_GET['review'];
+$current =  $_GET['date'];
+$model = $_GET['car_model'];
+?>
+<form action="handle_update.php" method ="get">
   <input type='hidden' value="<?php echo $model; ?>" name="model">
   <?php
     echo '<div class="header">';
-    echo '<label "for=rating">Enter rating</label><br>';
-    echo '<input name = "rating" type="text" /><br><br>';
-    echo '<label "for=review" >Enter review</label><br>';
-    echo '<input name = "review" type="textarea"/><br>';
+    echo '<label "for=rating">Change the rating</label><br>';
+    echo '<input name = "rating" type="text" value='.$rating.'><br><br>';
+    echo '<label "for=review">Change the review review</label><br>';
+    echo '<input name = "review" type="textarea" value='.$review.'><br>';
     echo '</div>';
   ?>
   <input type="submit">
 </form>
-</div>
-
-</body>
-</html>

@@ -36,18 +36,5 @@ a:visited {
 }
 
 .prices {
-    color: red;
-}
-
-#table {
-    transform: rotate(90deg);
-}
-
-#table th,
-#table td {
-    transform: rotate(-90deg);
-}
-
-td {
-    height: 50px;
+    text-align: center;
 }

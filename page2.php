@@ -13,7 +13,7 @@
 <body>
     
 
-<form action = "page2.php" method ="post">
+<form action = "page2.php" method ="get">
     <select for="sorting" name="sort">
         <option value="" selected="selected">Any Order</option>
         <option value="ASC">Ascending</option>
@@ -38,13 +38,13 @@
     //Company Filter
         if(!empty($_GET['company_ids']))
         {
-            $add .= " WHERE ";
+            $add .= " WHERE (";
             foreach($_GET['company_ids'] as $id)
             {
                 $add .= "c.company_id = " . $id . " OR ";
             }
             $add = substr($add, 0, -3);
-            $add .= " AND ";
+            $add .= ") AND ";
         }
 
         else
@@ -60,17 +60,18 @@
     //Type Filter
         if(!empty($_GET['car_types']))
         {
-            $add .= " AND ";
+            $add .= " AND (";
             foreach($_GET['car_types'] as $type)
             {
                 $add .= "t.type = '" . $type . "' OR ";
             }
             $add = substr($add, 0, -3);
+            $add .= ")";
         }
     //sorting of price 
         if(!empty($_POST["sorting"]))
         {
-            $add .= "ORDER BY s.price " .$_POST["sorting"];
+            $add .= "ORDER BY s.price " .$_GET["sorting"];
         }
     
         $sql = $sqlOld . $add ;
@@ -85,7 +86,8 @@
         <th>Price</th>
         <th>Type</th> 
         <th>Company</th> 
-        <th>Year</th> 
+        <th>Year</th>
+        <th>Add a review</th> 
     </tr>
         <?php
         while($stmt->fetch())
@@ -96,6 +98,7 @@
             echo '<td>'.$type.'</td>';
             echo '<td>'.$company_name.'</td>';
             echo '<td>'.$year.'</td>';
+            echo '<td><a class="stdbtn" href ="page4.php?car_model='.$cars_cmodel.'">Add Review</a></td>';
             echo '</tr>';
         }
         $stmt->close();
