@@ -1,3 +1,5 @@
+<!--This form acts as an interface for the user to insert data into the database. The user can enter their rating and review of the car.
+The date of the review is recorded by an inbuilt function that produces the current date, which is added along with the user inputs.-->
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" type="text/css" href="style.css">
@@ -18,7 +20,7 @@ echo '<h2>Add Review for '.$model.'</h2>';
 ?>
 
 <form action="add_review.php" method ="get">
-  <input type='hidden' value="<?php echo $model; ?>" name="model">
+  <input type='hidden' value="<?php echo $model; ?>" name="model"><!--Hidden input that takes the value of the car model, as received from the manipulation of the URL in car_info.php-->
   <?php
     echo '<div class="header">';
     echo '<label "for=rating">Enter rating</label><br>';

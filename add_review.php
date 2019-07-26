@@ -1,3 +1,4 @@
+<!--This page inserts the given user review data into the reviews table in the database-->
 <html>
 <link rel="stylesheet" type="text/css" href="style.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
@@ -9,7 +10,7 @@
   <br>
     <a class="stdbtn" href="index.php">Main Page</a>
   </br> 
-</div>
+
 <?php
     // Enable error logging: 
     error_reporting(E_ALL ^ E_NOTICE);
@@ -19,12 +20,13 @@
 ?>
 
 <?php
-
+//getting all the required information from get_review.php
 $rating = $_GET['rating'];
 $review = $_GET['review'];
 $current = date('Y-m-d');
 $model = $_GET['model'];
 
+//since the reviews table has a foreign key of cid, we need to find the corresponding cid of the cmodel that we have
 $sql = "SELECT cid from cars where cmodel = ? ";
 $stmt = $mysqli->prepare($sql);
 $stmt->bind_param("s",$model);
@@ -33,17 +35,18 @@ $stmt->bind_result($cid);
 $stmt->fetch();
 $stmt->close();
 
+//insert statement
 $sql1 = "INSERT INTO reviews VALUES (?,?,?,?)";
 $stmt1 = $mysqli->prepare($sql1);
 echo $mysqli->error;
 $stmt1->bind_param("sssi",$rating,$review,$current,$cid);
 
 if ($stmt1->execute()) {
-    echo "New record created successfully";
+    echo "Your review has been added successfully!";
     ?>
     <br>
     <?php
-     echo '<a class="stdbtn" href="page3.php?car_model='.$model.'">Check it out!</a>'
+     echo '<a class="stdbtn" href="page3.php?car_model='.$model.'">Check it out!</a>'//allow the user to take a look at their review on the info page(again use manipulaation of php URL)
      ?>
     </br>
     <?php
@@ -54,5 +57,8 @@ if ($stmt1->execute()) {
 $stmt1->close();
 
 ?>
+</div>
+</body>
+</html>
 
 
